@@ -6,6 +6,7 @@
         v-model="cateName" style="width: 200px;">
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增栏目</el-button>
+      <el-button type="primary" size="medium" style="margin-left: 10px" @click="exportCate">导出栏目</el-button>
     </el-header>
     <el-main class="cate_mana_main">
       <el-table
@@ -60,11 +61,30 @@
   import {getRequest} from '../utils/api'
   export default{
     methods: {
+      exportCate(){
+        debugger;
+        this.commonAjaxExport("/admin/category/export",{}).then(resp=>{
+          debugger;
+          if(resp){
+            debugger;
+            //msword pdf zip   // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+            let blob = new Blob([resp], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
+            let downloadElement = document.createElement('a');
+            let href = window.URL.createObjectURL(blob); // 创建下载的链接
+            downloadElement.href = href;
+            downloadElement.download = '栏目管理'+'.xlsx'; // 下载后文件名
+            document.body.appendChild(downloadElement);
+            downloadElement.click(); // 点击下载
+            document.body.removeChild(downloadElement); // 下载完成移除元素
+            window.URL.revokeObjectURL(href); // 释放掉blob对象
+          }
+        })
+      },
       addNewCate(){
         this.loading = true;
         var _this = this;
         postRequest('/admin/category/', {cateName: this.cateName}).then(resp=> {
-          if (resp.status == 200) {
+          if (resp.status === 200) {
             var json = resp.data;
             _this.$message({type: json.status, message: json.msg});
             _this.cateName = '';
