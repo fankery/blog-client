@@ -22,7 +22,7 @@
     "font-awesome": "^4.7.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "mavon-editor": "^2.7.7",
+    "mavon-editor": "^2.8.2",
     "node-sass": "^4.13.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.1",
